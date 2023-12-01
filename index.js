@@ -58,6 +58,7 @@ router.post("/", (req, res) => {
       let userName;
       let userRegistered;
       let response = "";
+      let Admins = ""
 
       if (!user) {
         userRegistered = false;
@@ -67,11 +68,54 @@ router.post("/", (req, res) => {
       }
    
       
+      // Function to get the count of job alerts
+// Function to get the count of job alerts
+async function getJobAlertsCount(phoneNumber) {
+  try {
+    // Call the JobAlerts function to get job alerts based on user's job interest
+    const jobInterest = await getUserJobInterest(phoneNumber);
+    const jobsInInterest = await getJobsInInterest(jobInterest);
+
+    return jobsInInterest.length;
+  } catch (error) {
+    console.error('Error getting job alerts count:', error);
+    return 0;
+  }
+}
+
+// Function to get the user's job interest
+async function getUserJobInterest(phoneNumber) {
+  try {
+    const user = await User.findOne({ phoneNumber });
+    return user ? user.JobType : null;
+  } catch (error) {
+    console.error('Error getting user job interest:', error);
+    throw error;
+  }
+}
+
+async function getJobsInInterest(jobInterest) {
+  try {
+    const jobs = await Job.find({ JobCategories: jobInterest }, 'Jobs');
+    return jobs.length > 0 ? jobs[0].Jobs : [];
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+const jobAlertsCount = await getJobAlertsCount(phoneNumber);
+
+
+Admins = await User.findOne({ phoneNumber: phoneNumber });
+      checkRole = Admins ? Admins.Role : null;
       
+      // Check if the user has the 'Admin' role
+      let isAdmin = checkRole === 'Employeer';
 
       // MAIN LOGIC
       if (text == "" && userRegistered == true) {
-        response = MainMenu(userName);
+        response = MainMenu(userName,jobAlertsCount,isAdmin);
       } else if (text == "" && userRegistered == false) {
         response = unregisteredMenu();
       } else if (text != "" && userRegistered == false) {

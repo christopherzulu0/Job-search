@@ -23,6 +23,10 @@ const UserSchema = mongoose.Schema({
     type:Number,
     required: true
   },
+  JobType:{
+    type: String,
+    required:true
+  },
   Role:{
     type:String,
       enum: ['Job Seeker', 'Admin', 'Employeer'],

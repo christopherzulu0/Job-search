@@ -1,4 +1,4 @@
-const { User,Item} = require('./models/Schemas');
+const {User,Job,Saved,Profile} = require('./models/Schemas');
 const axios = require("axios");
 const countryCode = require("./util/countryCode");
 const bcrypt = require("bcrypt");
@@ -7,17 +7,25 @@ const { response } = require('express');
 const i18n = require("i18n");
 
 let roles = ""
-const menu = {
-  MainMenu: (userName) => {
-    let response = "";
-     response = `CON Hi <b>${userName}</b>! 
-                Welcome to Job Search Portal!
-                1. Browse Category
-                2. Job Alerts(5)
-                3. Contact Support
-            `;
+let selectedJobs = ""
+let jobInterest = ""
 
-    return response;
+const menu = {
+  MainMenu: (userName,jobAlertsCount,isAdmin) => {
+    let response = "";
+   if(isAdmin){
+     response = `CON Hello ${userName}! Enter 4 to proceed.`;
+     return response;
+   }else{
+    response = `CON Hi <b>${userName}</b>! 
+    Welcome to Job Search Portal!
+    1. Browse Category
+    2. Job Alerts(${jobAlertsCount})
+    3. Contact Support
+`;
+
+return response;
+   }
   },
   unregisteredMenu: () => {
     let response = "";
@@ -50,17 +58,42 @@ const menu = {
           response += `${index + 1}. ${role}\n`;
         });
         break;
-      
+
       case 5:
+        const categories = await getCategoriesFromDB();
+        
+        if (categories.length > 0) {
+            // If categories are found, display them in the USSD response
+            response = `CON Choose job category you prefer, to get updates on:\n`;
+            categories.forEach((category, index) => {
+                response += `${index + 1}. ${category}\n`;
+            });
+            response += `99. Back`;
+            // Store the available categories for later use
+            selectedJobs = categories;
+            // Return the response
+            return response;
+        } else {
+            // If no categories are found, provide an appropriate message
+            response = `END No jobs found.`;
+            return response;
+        }
+
+      break;
+      
+      case 6:
           response = "CON Set a login pin(4 Digits)";
           break;
-      case 6:
+      case 7:
         response = "CON Please confirm your PIN:";
         break;
-      case 7:
+      case 8:
         const userRoleIndex = parseInt(textArray[4]) - 1;
         const rolesArray = getRole();
         const selectedRole = rolesArray[userRoleIndex];
+
+        const Interest = parseInt(textArray[5]) -1;
+        jobInterest = selectedJobs[Interest];
 
         // Store the selected role in the textArray
         textArray[4] = selectedRole;
@@ -70,13 +103,14 @@ const menu = {
                     Email: ${textArray[2]}
                     DOB: ${textArray[3]}
                     Role: ${selectedRole}
+                    Job Interest: ${jobInterest}
                     1. Confirm & continue
                   `;
         break;
-      case 8:
-        if(textArray[7] === '1'){
-        const pin = textArray[5];
-        const confirmPin = textArray[6];
+      case 9:
+        if(textArray[8] === '1'){
+        const pin = textArray[6];
+        const confirmPin = textArray[7];
         // Check if the name is strictly alphabets via regex
       
         // Check if the pin is 5 characters long and is purely numerical
@@ -105,7 +139,8 @@ const menu = {
               DOB: textArray[3],
               phoneNumber: phoneNumber,
               pin: textArray[6],
-              Role: selectedRole
+              Role: selectedRole,
+              JobType:jobInterest
               
             };
     
@@ -146,10 +181,23 @@ const menu = {
    
 };
 
-
+//Get user role
 function getRole() {
   return ["Job Seeker", "Employeer"];
 }
 
+  //get job categories from DB
+  async function getCategoriesFromDB() {
+    try {
+        // Fetch categories from the database
+        const categories = await Job.find({}, 'JobCategories'); // Assuming you have a 'Category' field in your Category schema
+        return categories.map(category => category.JobCategories); // Extract category names
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+  }
 
+
+  
 module.exports = menu;
