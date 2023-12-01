@@ -1,4 +1,4 @@
-const {User,Job,Saved,Profile, resume} = require('../models/Schemas');
+const {User,Job, resume} = require('../models/Schemas');
 const shortid = require('shortid');
 
 let selectedJobs = ""

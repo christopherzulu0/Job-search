@@ -1,4 +1,4 @@
-const {User,Job,Saved,Profile} = require('../models/Schemas');
+const {User,Job} = require('../models/Schemas');
 let jobInterest = ""
 let selectedJobs = ""
 const Alerts ={

@@ -1,4 +1,4 @@
-const {User,Job,Saved,Profile} = require('./models/Schemas');
+const {User,Job} = require('./models/Schemas');
 const axios = require("axios");
 const countryCode = require("./util/countryCode");
 const bcrypt = require("bcrypt");

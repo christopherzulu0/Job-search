@@ -73,41 +73,7 @@ const JobsSchema = mongoose.Schema({
   
 });
 
-const SavedJobsSchema = mongoose.Schema({
-    Position:{
-      type: String,
-      required:true,
-    },
-    Location:{
-      type: String,
-      required: true,
-    },
-    CompanyName:{
-      type: String,
-      required: true,
-    },
-    DeadLine:{
-      type: String,
-      required: true,
-    },
-    JobSummary:{
-      type: String,
-      required: true,
-    },
-    ClientNumber:{
-      type: String,
-      required: true,
-    },
-    PostedDate:{
-      type: String,
-      required: true,
-    },
-    Requirements:{
-      type: String,
-      required: true,
-    }
- 
-});
+
 
 const CompanyProfileSchema = mongoose.Schema({
     CompanyName: {
@@ -138,13 +104,11 @@ const CompanyProfileSchema = mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 const Job = mongoose.model('Job', JobsSchema);
-const Saved = mongoose.model('Saved',JobsSchema);
 const Profile = mongoose.model('Profile', CompanyProfileSchema)
 
 
 module.exports = {
   User,
   Job,
-  Saved,
   Profile,
 };
