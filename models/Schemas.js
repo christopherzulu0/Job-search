@@ -23,27 +23,124 @@ const UserSchema = mongoose.Schema({
     type:Number,
     required: true
   },
+  Role:{
+    type:String,
+      enum: ['Job Seeker', 'Admin', 'Employeer'],
+        default: 'Job Seeker'
+  }
+  
 });
 
-const ItemSchema = mongoose.Schema({
-  foodCategory: {
+const JobsSchema = mongoose.Schema({
+  JobCategories: {
     type: String,
     required: true
   },
-  foodName: {
-    type: String,
-    required: true
-  },
-  foodPrice: {
-    type: String,
-    required: true
-  }
+  Jobs:[{
+    Position:{
+      type: String,
+      required:true,
+    },
+    Location:{
+      type: String,
+      required: true,
+    },
+    CompanyName:{
+      type: String,
+      required: true,
+    },
+    DeadLine:{
+      type: String,
+      required: true,
+    },
+    JobSummary:{
+      type: String,
+      required: true,
+    },
+    Email:{
+      type: String,
+      required: true,
+    },
+    Requirements:{
+      type: String,
+      required: true,
+    }
+  }]
+  
 });
+
+const SavedJobsSchema = mongoose.Schema({
+    Position:{
+      type: String,
+      required:true,
+    },
+    Location:{
+      type: String,
+      required: true,
+    },
+    CompanyName:{
+      type: String,
+      required: true,
+    },
+    DeadLine:{
+      type: String,
+      required: true,
+    },
+    JobSummary:{
+      type: String,
+      required: true,
+    },
+    ClientNumber:{
+      type: String,
+      required: true,
+    },
+    PostedDate:{
+      type: String,
+      required: true,
+    },
+    Requirements:{
+      type: String,
+      required: true,
+    }
+ 
+});
+
+const CompanyProfileSchema = mongoose.Schema({
+    CompanyName: {
+      type: String,
+      required: true,
+    },
+    CompanyEmail: {
+      type: String,
+      required: true
+    },
+    CompanyAddress: {
+      type: String,
+      required: true
+    },
+    Companytype: {
+      type: String,
+      required: true
+    },
+    EmployeerNumber: {
+      type: String,
+      required: true
+    },
+})
+
+
+
+
 
 const User = mongoose.model('User', UserSchema);
-const Item = mongoose.model('Item', ItemSchema)
+const Job = mongoose.model('Job', JobsSchema);
+const Saved = mongoose.model('Saved',JobsSchema);
+const Profile = mongoose.model('Profile', CompanyProfileSchema)
+
 
 module.exports = {
   User,
-  Item
+  Job,
+  Saved,
+  Profile,
 };

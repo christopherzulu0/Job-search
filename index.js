@@ -5,20 +5,17 @@ const {
     MainMenu,
     Register,
     unregisteredMenu,
-    Jobs,
-    BrowseCategory,
-    UploadResume,
-    SavedJobs,
-    ApplicationHistory,
-    AccountSettings,
-    ContactSupport,
-    JobAlerts
   } = require("./menu");
-  
-  const {Transaction, Wallet, User,Savings} = require('./models/Schemas');
-  const mongoose = require("mongoose");
-  const dotenv = require("dotenv");
-  const cors = require("cors");
+const {User,Job,Saved,Profile} = require('./models/Schemas');
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const { ContactSupport } = require("./paths/ContactSupport");
+const { JobAlerts } = require("./paths/Alerts");
+const { BrowseCategory } = require("./paths/Category");
+const { EmployeerData } = require("./Employeer");
+
+
   const app = express();
 
 
@@ -68,7 +65,7 @@ router.post("/", (req, res) => {
         userRegistered = true;
         userName = user.Name;
       }
-
+   
       
       
 
@@ -90,27 +87,19 @@ router.post("/", (req, res) => {
         const textArray = text.split("*");
 
         switch (textArray[0]) {
-          case "1":
-            response = await Jobs(textArray, phoneNumber);
-            break;
-          case "2": 
+          case "1": 
           response = await BrowseCategory(textArray, phoneNumber);
             break;
-          case "3":
-          response = await SavedJobs(textArray,phoneNumber);
-            break;
-          case "4":
-            response = await ApplicationHistory(textArray, phoneNumber);
-              break;
-          case "5":
-          response = await AccountSettings(textArray, phoneNumber);
-            break;
-          case "6":
+        
+          case "2":
           response = await JobAlerts(textArray, phoneNumber);
             break;
-            case "7":
+            case "3":
           response = await ContactSupport(textArray, phoneNumber);
             break;
+          case "4":
+          response = await EmployeerData(textArray,phoneNumber);
+          break;
           default:
               response = "END Invalid choice. Please try again";
         }
