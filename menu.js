@@ -29,7 +29,7 @@ return response;
   },
   unregisteredMenu: () => {
     let response = "";
-    response = `CON Welcome to JobSearch Plus!
+    response = `CON Welcome to Mobile Job Search Application!
     To help you find your dream job, please create an account to get started:
   1. Register an account
   `;
