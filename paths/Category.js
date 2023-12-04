@@ -50,7 +50,7 @@ const Category = {
         
                 if (jobs.length > 0) {
                     // If jobs are found, display them for editing
-                    response = `CON <b>Jobs in ${selectedCategoryName} to delete:</b>\n`;
+                    response = `CON <b>Jobs in ${selectedCategoryName} :</b>\n`;
                    jobs.forEach((job, index) => {
                         response += `${index + 1}. <b>${job.Position}</b>\n`;
                         return response;
@@ -92,9 +92,10 @@ const Category = {
               Job Summary:
               <b>${selectedJob.JobSummary}</b>
               
-              <b>To Apply:</b>
+              Job information:
+              Email: ${selectedJob.Email}
                 
-              1. Apply for Job
+              
               99. Go Home
             `;
             return response;

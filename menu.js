@@ -29,7 +29,9 @@ return response;
   },
   unregisteredMenu: () => {
     let response = "";
-    response = `CON Welcome to Mobile Job Search Application!
+    response = `CON Welcome to <b> Mwinilunga Mobile Job Search Application!</b>
+    ( A case study of Mwinilunga North Western Zambia)
+    
     To help you find your dream job, please create an account to get started:
   1. Register an account
   `;

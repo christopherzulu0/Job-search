@@ -60,6 +60,9 @@ const Alerts ={
              Job Summary:
              <b>${selected.JobSummary}</b>
              
+             Job information:
+             Email: ${selected.Email}
+            
 
              99. Go Home
            `;
